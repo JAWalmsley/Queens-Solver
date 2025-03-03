@@ -18,6 +18,10 @@ class Board:
         self.queens = set()
         self.markers = set()
     
+    def reset(self):
+        self.queens = set()
+        self.markers = set()
+
     def copy(self):
         b = copy.deepcopy(self)
         return b
@@ -61,6 +65,11 @@ class Board:
         self.add_marker(x+1, y-1)
         self.add_marker(x+1, y-1)
         self.add_marker(x-1, y-1)
+        colour = self.colours[y][x]
+        for row in range(self.size):
+            for col in range(self.size):
+                if self.colours[row][col] == colour:
+                    self.add_marker(col, row)
 
     def add_marker(self, x, y):
         if x >= self.size or y >= self.size:

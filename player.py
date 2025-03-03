@@ -21,25 +21,26 @@ class Player:
         out.add((x-1, y-1))
         return out
     
-    def block_overlap_positions(self, board: Board):
+    def block_overlap_positions(self, board: Board, regions: dict[int, set]):
         """
         Block any positions that are blocked by every spot in a region
         """
         # Find smallest region
-        region_sizes = Counter(i for i in list(itertools.chain.from_iterable(board.colours)))
-        regions = sorted(region_sizes, key=region_sizes.get)
-        for curr_region in regions:
+        region_sizes = {region: len(spots) for region, spots in regions.items()}
+        sorted_regions = sorted(region_sizes, key=region_sizes.get)
+        for curr_region in sorted_regions:
             # Try each position in that region
             blocked = []
             for row in range(board.size):
                 for col in range(board.size):
-                    if board.colours[row][col] == curr_region and (col,row) not in board.markers:
-                            blocked.append(self.get_blocked_coords(board, col, row))
-            # Mark squares in overlap of those blocked regions
-            common_blocked = set.intersection(*blocked)
+                    if board.colours[row][col] == curr_region and (col,row) not in board.markers and (col,row) not in board.queens:
+                        blocked.append(self.get_blocked_coords(board, col, row))
+            if len(blocked) > 0:
+                # Mark squares in overlap of those blocked regions
+                common_blocked = set.intersection(*blocked)
 
-            for pos in common_blocked:
-                board.add_marker(pos[0], pos[1])
+                for pos in common_blocked:
+                    board.add_marker(pos[0], pos[1])
     
     def place_in_last_slot(self, board: Board, regions: dict[int, set]):
         """
@@ -47,6 +48,7 @@ class Player:
         """
         for region, spots in regions.items():
             free_spots: set = spots.difference(board.markers)
+            free_spots = free_spots.difference(board.queens)
             if len(free_spots) == 1:
                 board.add_queen(*(free_spots.pop()))
 
@@ -58,7 +60,8 @@ class Player:
                 regions[board.colours[row][col]] = set()
         for row in range(board.size):
             for col in range(board.size):
-                regions[board.colours[row][col]].add((col, row))
-        self.block_overlap_positions(board)
+                if (col,row) not in board.queens and (col,row) not in board.markers:
+                    regions[board.colours[row][col]].add((col, row))
+        self.block_overlap_positions(board, regions)
         self.place_in_last_slot(board, regions)
         return board

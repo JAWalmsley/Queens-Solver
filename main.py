@@ -13,7 +13,7 @@ file_path = 'maps.json'
 curr_map = {}
 
 with open(file_path, 'r') as file:
-    board_id = 45
+    board_id = 79
     data = json.load(file)
     regions = set()
     for row in data[board_id]['colorGrid']:
@@ -66,6 +66,8 @@ while True:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
                 curr_map = player.next_move(curr_map)
+            elif event.key == pygame.K_r:
+                curr_map.reset()
         if dragging != 0:
             x, y = pygame.mouse.get_pos()
             col = x // SQUARE_SIZE
