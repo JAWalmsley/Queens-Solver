@@ -59,6 +59,28 @@ class Player:
                         for y in r1_y_set:
                             if (x,y) not in r1 and (x,y) not in r2:
                                 board.add_marker(x, y)
+    
+    def n_regions_n_rows(self, board: Board, regions: list[set]):
+        # For every window size
+        for window_sz in range(1, board.size):
+            # For every window position
+            for i in range(board.size - window_sz + 1):
+                window_regions = set()
+                for y, row in enumerate(board.colours[i:i+window_sz], start=i):
+                    print(y)
+                    for x,colour in enumerate(row):
+                        window_regions.add(colour)
+                        pass
+                if len(window_regions) == window_sz:
+                    # This window needs window_sz queens needed and only has that many colours, so these colours' queens must be in this region.
+                    # Remove any square of one of these colours that is outside of this window
+                    for y, row in enumerate(board.colours):
+                        if y >= i and y < i+window_sz:
+                            # This is inside the window
+                            continue
+                        for x, colour in enumerate(row):
+                            if colour in window_regions:
+                                board.add_marker(x, y)
 
     
     def place_in_last_slot(self, board: Board, regions: list[set]):
@@ -93,6 +115,8 @@ class Player:
         self.place_in_last_slot(board, regions_and_cols_rows)
 
         self.pairs_in_rows(board, region_list)
+        
+        self.n_regions_n_rows(board, region_list)
         
         # If the board didn't change we didn't find anything better... Pick a random slot?
         # if board == curr_board:
