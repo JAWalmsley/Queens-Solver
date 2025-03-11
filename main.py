@@ -4,23 +4,15 @@ import json
 import colorsys
 from board import Board
 from player import Player
+import map_parse
 
 # Define constants
 WINDOW_SIZE = 500
 
 file_path = 'maps.json'     
 
-curr_map = {}
-
-with open(file_path, 'r') as file:
-    board_id = 79
-    data = json.load(file)
-    regions = set()
-    for row in data[board_id]['colorGrid']:
-        for i in row:
-            regions.add(i)
-
-    curr_map = Board(data[board_id]['caseNumber'], data[board_id]['colorGrid'])
+# curr_map = map_parse.parse_orig(file_path, 4)
+curr_map = map_parse.parse_archivedqueens_byID('archivedqueens.json', 151)
 
 # Initialize pygame
 pygame.init()

@@ -14,9 +14,29 @@ class Board:
     def __init__(self, size, board):
         self.size = size
         self.colours = board
-        
         self.queens = set()
         self.markers = set()
+        
+        self.fix_board_region_numbers()
+    
+    def __eq__(self, other):
+        return self.size == other.size\
+            and self.colours == other.colours\
+            and self.queens == other.queens\
+            and self.markers == other.markers
+    
+    def fix_board_region_numbers(self):
+        # The board should be from 0 to N-1, sometimes they skip random numbers in between for some reason
+        existing_nums = set([cell for row in self.colours for cell in row])
+        expected_nums = {i for i in range(self.size)}
+        missing_nums = expected_nums.difference(existing_nums)
+        unexpected_nums = existing_nums.difference(expected_nums)
+        for old, new in zip(unexpected_nums, missing_nums):
+            for row in self.colours:
+                for i,val in enumerate(row):
+                    if val == old:
+                        row[i] = new
+        pass
     
     def reset(self):
         self.queens = set()
@@ -108,9 +128,9 @@ class Board:
                 # Corners
                 if abs(q1[0]-q2[0]) == 1 and abs(q1[1]-q2[1]) == 1:
                     return False
-        # Exactly one queen per colour region
+        # No more than one queen per colour region
         for region in colour_region_queens:
-            if region != 1:
+            if region > 1:
                 return False
         return True
 
