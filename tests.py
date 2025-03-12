@@ -1,4 +1,3 @@
-import pygame
 import unittest
 import json
 import time
@@ -15,8 +14,8 @@ curr_map = {}
 
 DISPLAY = False
 
-
 if DISPLAY:
+    import pygame
     # Initialize pygame
     pygame.init()
 
