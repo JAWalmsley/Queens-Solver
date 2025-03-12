@@ -3,7 +3,7 @@ import colorsys
 import copy
 LINE_THICKNESS = 4
 
-MAX_REGIONS = 9
+MAX_REGIONS = 10
 HSV_tuples = [(x/MAX_REGIONS, 0.6, 1.0) for x in range(MAX_REGIONS)]
 COLOURS = [tuple(i*255 for i in colorsys.hsv_to_rgb(*x)) for x in HSV_tuples]
 PADDING = 10
@@ -97,7 +97,7 @@ class Board:
         if (x,y) in self.queens:
             return
         else:
-            self.markers.add((x,y))
+                self.markers.add((x,y))
 
     def remove_marker(self, x, y):
         if x >= self.size or y >= self.size:

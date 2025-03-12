@@ -12,7 +12,7 @@ WINDOW_SIZE = 500
 file_path = 'maps.json'     
 
 # curr_map = map_parse.parse_orig(file_path, 4)
-curr_map = map_parse.parse_archivedqueens_byID('archivedqueens.json', 151)
+curr_map = map_parse.parse_archivedqueens_byID('archivedqueens.json', 304)
 
 # Initialize pygame
 pygame.init()
@@ -24,6 +24,8 @@ pygame.display.set_caption("Queens Game")
 def draw_game():
     if curr_map.is_complete():
         background = "green"
+    elif not curr_map.is_valid():
+        background = "red"
     else:
         background = "black"
     screen.fill(background)
