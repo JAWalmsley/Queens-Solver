@@ -3,7 +3,7 @@ import colorsys
 import copy
 LINE_THICKNESS = 4
 
-MAX_REGIONS = 10
+MAX_REGIONS = 12
 HSV_tuples = [(x/MAX_REGIONS, 0.6, 1.0) for x in range(MAX_REGIONS)]
 COLOURS = [tuple(i*255 for i in colorsys.hsv_to_rgb(*x)) for x in HSV_tuples]
 PADDING = 10
