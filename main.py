@@ -12,7 +12,8 @@ WINDOW_SIZE = 500
 file_path = 'maps.json'     
 
 # curr_map = map_parse.parse_orig(file_path, 4)
-curr_map = map_parse.parse_archivedqueens_byID('archivedqueens.json', 304)
+parser = map_parse.ArchivedQueensParser("archivedqueens.json", True)
+curr_map = parser.getByID(177)
 
 # Initialize pygame
 pygame.init()

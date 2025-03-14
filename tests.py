@@ -54,7 +54,9 @@ class TestGame(unittest.TestCase):
                 self.helper_test_board(board)
             
     def test_archive(self):
-        for i in range(139):
-            id, board = map_parse.parse_archivedqueens("archivedqueens.json", i)
+        parser = map_parse.ArchivedQueensParser("archivedqueens.json", False)
+        num = parser.getNumBoards()
+        for i in range(num):
+            id, board = parser.getByIndex( i)
             with self.subTest(id=f"{id:03}"):
                 self.helper_test_board(board)
