@@ -1,3 +1,4 @@
+import time
 import pygame
 import colorsys
 import copy
@@ -16,6 +17,7 @@ class Board:
         self.colours = board
         self.queens = set()
         self.markers = set()
+        self.show_steps = True
         
         self.fix_board_region_numbers()
     
@@ -57,12 +59,28 @@ class Board:
             pygame.draw.line(screen, "black", (col * square_size + PADDING, row * square_size + PADDING), ((col+1) * square_size - PADDING, (row+1) * square_size - PADDING), 5)
             pygame.draw.line(screen, "black", ((col+1) * square_size - PADDING, row * square_size + PADDING), ((col) * square_size + PADDING, (row+1) * square_size - PADDING), 5)
 
+    def display(self):
+         # Setup screen
+        screen = pygame.display.set_mode((500, 500))
+        pygame.display.set_caption("Queens Game")
+        if self.is_complete():
+            background = "green"
+        else:
+            background = "black"
+        screen.fill(background)
+        self.draw(screen)
+        pygame.display.flip()
+
     def add_queen(self, x, y):
+        
         if x >= self.size or y >= self.size:
             return
         if (x,y) in self.markers:
             return
         else:
+            if self.show_steps and (x,y) not in self.queens:
+                self.display()
+                time.sleep(0.1)
             self.queens.add((x,y))
             self.auto_mark(x, y)
     def remove_queen(self, x, y):
@@ -92,12 +110,16 @@ class Board:
                     self.add_marker(col, row)
 
     def add_marker(self, x, y):
+        
         if x >= self.size or y >= self.size:
             return
         if (x,y) in self.queens:
             return
         else:
-                self.markers.add((x,y))
+            if self.show_steps and (x,y) not in self.markers:
+                self.display()
+                time.sleep(0.1)
+            self.markers.add((x,y))
 
     def remove_marker(self, x, y):
         if x >= self.size or y >= self.size:

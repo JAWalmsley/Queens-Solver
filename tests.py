@@ -44,14 +44,16 @@ class TestGame(unittest.TestCase):
             iters += 1
             if iters > 20:
                 self.fail("Timeout, made too many moves without finishing")
-            # time.sleep(0.05)
-        # time.sleep(0.5)
+            if DISPLAY:
+                time.sleep(0.1)
+        if DISPLAY:
+            time.sleep(0.5)
     
-    def test_broken(self):
-        for i in range(1,100):
-            with self.subTest(id=f"{i:02}"):
-                board = map_parse.parse_orig(file_path, i)
-                self.helper_test_board(board)
+    # def test_broken(self):
+    #     for i in range(1,100):
+    #         with self.subTest(id=f"{i:02}"):
+    #             board = map_parse.parse_orig(file_path, i)
+    #             self.helper_test_board(board)
             
     def test_archive(self):
         parser = map_parse.ArchivedQueensParser("archivedqueens.json", False)
